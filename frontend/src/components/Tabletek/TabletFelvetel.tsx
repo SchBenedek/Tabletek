@@ -91,19 +91,19 @@ export default function TabletFelvetel(){
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                 <label className="font-weight-bold">Brand:</label>
-                <input type="text" className="form-control" value={brand} onChange={(e) => setBrand(e.target.value)} />
+                <input type="text" className="form-control" value={brand} onChange={(e) => setBrand(e.target.value)} placeholder="Brand"/>
                 </div>
                 <div className="form-group">
                 <label className="font-weight-bold">Model:</label>
-                <input type="text" className="form-control" value={model} onChange={(e) => setModel(e.target.value)} />
+                <input type="text" className="form-control" value={model} onChange={(e) => setModel(e.target.value)} placeholder="Model"/>
                 </div>
                 <div className="form-group">
                 <label className="font-weight-bold">OS:</label>
-                <input type="text" className="form-control" value={os} onChange={(e) => setOs(e.target.value)} />
+                <input type="text" className="form-control" value={os} onChange={(e) => setOs(e.target.value)} placeholder="Operating system"/>
                 </div>
                 <div className="form-group">
                 <label className="font-weight-bold">CPU Model:</label>
-                <input type="text" className="form-control" value={cpuModel} onChange={(e) => setCpuModel(e.target.value)} />
+                <input type="text" className="form-control" value={cpuModel} onChange={(e) => setCpuModel(e.target.value)} placeholder="CPU Model"/>
                 </div>
                 <div className="form-group">
                 <label className="font-weight-bold">CPU Cores:</label>

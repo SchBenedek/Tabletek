@@ -101,8 +101,12 @@ export default function TabletKartya(){
                     <a className="nav-link text-secondary" href="/tabletFelvetel">Tablet felvétel</a>
                 </li>
             </ul>
-            <label htmlFor="torlesKerdes" className="font-weight-bold">Törlés check</label>
-            <input type="checkbox" id="torlesKerdes" onChange={(e)=>setTorlesKerdes(e.target.checked)}/>
+            <div className="d-flex ms-auto">
+                <div className="form-check form-switch">
+                    <input className="form-check-input" type="checkbox" id="torlesKerdes" onChange={(e) => setTorlesKerdes(e.target.checked)}/>
+                    <label className="form-check-label text-secondary" htmlFor="torlesKerdes">Törlés check</label>
+                </div>
+            </div>
         </div>
     </nav>
     </header>
