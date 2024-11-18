@@ -10,6 +10,7 @@ import TabletKartya from './components/Tabletek/TabletKartya';
 import TabletFelvetel from './components/Tabletek/TabletFelvetel';
 import TabletTorles from './components/Tabletek/TabletTorles';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Kezdolap from './components/Tabletek/Kezdolap/Kezdolap';
 
   const router = createBrowserRouter([

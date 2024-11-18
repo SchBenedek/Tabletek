@@ -15,6 +15,7 @@ interface Tablet {
 export default function TabletKartya(){
     
     const [tablets, setTablets] = useState<Tablet[]>([]);
+    const [filterTablets, setFilterTablets] = useState<Tablet[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState(null);
     const [errorServer, setErrorServer] = useState<string>("");
@@ -54,6 +55,7 @@ export default function TabletKartya(){
             })
             .then((data) => {
                 setTablets(data);
+                setFilterTablets(data);
                 setLoading(false);
             })
             .catch((error) => { 
