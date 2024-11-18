@@ -24,9 +24,14 @@ export default function TabletKartya() {
     const [searchTerm, setSearchTerm]=useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [limit, setLimit]=useState<number>(25);
 
-    useEffect(() => {
-        fetch("http://localhost:3000/tablets")
+    const fetchTablets=(page:number)=>{
+        console.log(`Fetching tablets: page=${page}, limit=${limit}`);
+        setLoading(true);
+        setError(null);
+    
+        fetch(`http://localhost:3000/tablets?page=${page}&limit=${limit}`)
             .then((response) => {
                 if (response.status === 404) {
                     setErrorServer('A kért erőforrás nem található (404)!');
@@ -37,15 +42,27 @@ export default function TabletKartya() {
                 return response.json()
             })
             .then((data) => {
-                setTablets(data);
-                setFilterTablets(data);
+                setTablets(data.data);
+                setFilterTablets(data.data);
+                setCurrentPage(data.currentPage);
+                setTotalPages(data.totalPages);
                 setLoading(false);
             })
             .catch((error) => {
                 console.log(error.message)
                 setError(error.message);
             })
-    }, []);
+    };
+
+    useEffect(()=>{
+        fetchTablets(currentPage);
+    }, [currentPage, limit]);
+
+    const handlePageChange=(page:number)=>{
+        if(page>=1 && page<=totalPages){
+            setCurrentPage(page);
+        }
+    }
 
     const sortTablets=(key: keyof Tablet, direction: "asc" | "desc")=>{
         const sortedTablets=[...filterTablets].sort((a, b)=>{
@@ -127,13 +144,14 @@ export default function TabletKartya() {
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle text-secondary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Találatok száma
+                                Találatok száma <span className="badge bg-primary text-wrap">{limit}</span>
                             </a>
+
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#">25</a></li>
-                                <li><a className="dropdown-item" href="#">50</a></li>
-                                <li><a className="dropdown-item" href="#">75</a></li>
-                                <li><a className="dropdown-item" href="#">100</a></li>
+                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(25)}>25</a></li>
+                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(50)}>50</a></li>
+                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(75)}>75</a></li>
+                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(100)}>100</a></li>
                             </ul>
                         </li>
                     </ul>

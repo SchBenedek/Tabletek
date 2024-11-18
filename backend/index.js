@@ -16,15 +16,23 @@ const db = mysql.createPool({
 }).promise();
 
 app.get('/tablets', async (req, res) => {
-    
-    try {
-        const temp = await db.query('SELECT * FROM tablets');
-        const rows = temp[0];
-        const fields = temp[1];
-        res.status(200).json(rows);
-    } catch (error) {
-        console.error(`Error retrieving tablets ${error}`);
-        res.status(500).json({ error: "Internal Server Error" });
+    const page=parseInt(req.query.page) || 1;
+    const limit=parseInt(req.query.limit) || 10;
+    const offset=(page-1)*limit;
+    try{
+        const countResult=await db.query('SELECT COUNT(*) as total FROM tablets');
+        const total=countResult[0][0].total;
+        const temp=await db.query('SELECT * FROM tablets LIMIT ? OFFSET ?', [limit, offset]);
+        const rows=temp[0];
+        res.status(200).json({
+            data:rows,
+            currentPage: page,
+            totalPages: Math.ceil(total/limit)
+        });
+    }
+    catch (error){
+        console.error(`Error retriving tablets ${error}`);
+        res.status(500).json({error: "Internal server error"});
     }
 })
 

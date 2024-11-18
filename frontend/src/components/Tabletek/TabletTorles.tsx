@@ -43,7 +43,7 @@ export default function TabletKartya(){
     }
 
     useEffect(() => {
-        fetch("http://localhost:3000/tablets")
+        fetch(`http://localhost:3000/tablets?page={1}&limit={1}`)
             .then((response) => { 
                 if (response.status === 404){
                     setErrorServer('A kért erőforrás nem található (404)!');
@@ -54,8 +54,8 @@ export default function TabletKartya(){
                 return response.json() 
             })
             .then((data) => {
-                setTablets(data);
-                setFilterTablets(data);
+                setTablets(data.data);
+                setFilterTablets(data.data);
                 setLoading(false);
             })
             .catch((error) => { 

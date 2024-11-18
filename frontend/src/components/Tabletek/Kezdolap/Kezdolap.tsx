@@ -32,7 +32,7 @@ export default function Kezdolap(){
                 return response.json() 
             })
             .then((data) => {
-                setTablets(data);
+                setTablets(data.data);
                 setLoading(false);
             })
             .catch((error) => { 
