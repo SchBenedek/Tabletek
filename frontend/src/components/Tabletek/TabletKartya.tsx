@@ -148,10 +148,10 @@ export default function TabletKartya() {
                             </a>
 
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(25)}>25</a></li>
-                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(50)}>50</a></li>
-                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(75)}>75</a></li>
-                                <li><a className="dropdown-item" href="#" onClick={()=>setLimit(100)}>100</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(25)}>25</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(50)}>50</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(75)}>75</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(100)}>100</a></li>
                             </ul>
                         </li>
                     </ul>

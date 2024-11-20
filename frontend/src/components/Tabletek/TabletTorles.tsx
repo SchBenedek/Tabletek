@@ -12,7 +12,7 @@ interface Tablet {
     storage_size: number; 
   }
 
-export default function TabletKartya(){
+export default function TabletTorles(){
     
     const [tablets, setTablets] = useState<Tablet[]>([]);
     const [filterTablets, setFilterTablets] = useState<Tablet[]>([]);
@@ -20,6 +20,9 @@ export default function TabletKartya(){
     const [error, setError] = useState(null);
     const [errorServer, setErrorServer] = useState<string>("");
     const [torlesKerdes, setTorlesKerdes]=useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [limit, setLimit]=useState<number>(25);
     const handleDelete=(id:number)=>{
         //alert("Törölt telefon: "+id);
         if(torlesKerdes){
@@ -42,8 +45,11 @@ export default function TabletKartya(){
         }
     }
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/tablets?page={1}&limit={1}`)
+    const fetchTablets=(page:number)=>{
+        console.log(`Fetching tablets: page=${page}, limit=${limit}`);
+        setLoading(true);
+        setError(null);
+        fetch(`http://localhost:3000/tablets?page=${page}&limit=${limit}`)
             .then((response) => { 
                 if (response.status === 404){
                     setErrorServer('A kért erőforrás nem található (404)!');
@@ -56,13 +62,25 @@ export default function TabletKartya(){
             .then((data) => {
                 setTablets(data.data);
                 setFilterTablets(data.data);
+                setCurrentPage(data.currentPage);
+                setTotalPages(data.totalPages);
                 setLoading(false);
             })
             .catch((error) => { 
                 console.log(error.message) 
                 setError(error.message);
             })
-    }, [])
+    };
+
+    useEffect(()=>{
+        fetchTablets(currentPage);
+    }, [currentPage, limit]);
+
+    const handlePageChange=(page:number)=>{
+        if(page>=1 && page<=totalPages){
+            setCurrentPage(page);
+        }
+    }
 
     if(errorServer){
         return <p>{errorServer}</p>
@@ -102,6 +120,17 @@ export default function TabletKartya(){
                 <li className="nav-item">
                     <a className="nav-link text-secondary" href="/tabletFelvetel">Tablet felvétel</a>
                 </li>
+                <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle text-secondary" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Találatok száma <span className="badge bg-primary text-wrap">{limit}</span>
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(25)}>25</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(50)}>50</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(75)}>75</a></li>
+                                <li><a className="dropdown-item d-flex justify-content-center" href="#" onClick={()=>setLimit(100)}>100</a></li>
+                            </ul>
+                        </li>
             </ul>
             <div className="d-flex ms-auto">
                 <div className="form-check form-switch">
@@ -134,7 +163,29 @@ export default function TabletKartya(){
             ))}
         </div>
     </main>
-
+    <footer className="bg-light py-3">
+            <div className="container text-center">
+                <div className="d-flex justify-content-center align-items-center gap-3">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="btn btn-primary"
+                    >
+                        &#8592;
+                    </button>
+                    <span className="fw-bold">
+                        Oldal {currentPage} / {totalPages}
+                    </span>
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="btn btn-primary"
+                    >
+                        &#8594;
+                    </button>
+                </div>
+            </div>
+        </footer>
         
     </>
 }
